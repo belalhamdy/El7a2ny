@@ -31,4 +31,5 @@ dependencies {
     implementation 'gr.pantrif:easy-android-splash-screen:0.0.1'
     implementation 'com.github.shrikanth7698:Custom-Navigation-Drawer:v0.0.1'
     implementation 'com.github.jakebonk:ChipView:1.0.1'
+    implementation 'me.omidh:liquidradiobutton:1.0.01'
 }
