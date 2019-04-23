@@ -23,7 +23,12 @@ import android.widget.Toast;
 import com.allyants.chipview.ChipView;
 import com.allyants.chipview.SimpleChipAdapter;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 
 
 /**
@@ -45,29 +50,22 @@ public class elaag extends Fragment{
         final Dialog fbDialogue = new Dialog(getActivity(), android.R.style.Theme_Black_NoTitleBar);
 
         final View tmp = LayoutInflater.from(getContext()).inflate(R.layout.choose, null);
-        final ArrayList<Object> data = new ArrayList<>();
         final ChipView cvTag = tmp.findViewById(R.id.cvTag);
-        View view = inflater.inflate(R.layout.fragment_elaag, container, false);
+        final Button enter = tmp.findViewById(R.id.btnOk);
+
+        final View view = inflater.inflate(R.layout.fragment_elaag, container, false);
         final Button cancel = view.findViewById(R.id.btnCancel);
         final RadioGroup rg = view.findViewById(R.id.RG);
         final EditText et = view.findViewById(R.id.ageET);
-        final ListView lst = view.findViewById(R.id.lstV);
         final Button add = view.findViewById(R.id.btnAdd);
-        final Button enter = tmp.findViewById(R.id.btnOk);
+        final Button next = view.findViewById(R.id.btnNext);
+
+        final RadioButton rdbMale = view.findViewById(R.id.rbm);
+        final RadioButton rdbFemale = view.findViewById(R.id.rbf);
+
         enter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainActivity.sympID.clear();
-                Toast.makeText(getActivity(), "hello55555", Toast.LENGTH_SHORT).show();
-                for (int i = 0 ; i<adapter.getCount() ; ++i)
-                {
-                    if(adapter.isSelected(i))
-                    {
-                        MainActivity.sympID.add(data.get(i).toString());
-                       // MainActivity.sympID.add(sympID[i]);
-                    }
-                }
-                lst.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, MainActivity.sympID));
                 fbDialogue.cancel();
             }
         });
@@ -78,8 +76,7 @@ public class elaag extends Fragment{
             {
                 rg.clearCheck();
                 et.setText("");
-                lst.setAdapter(null);
-                adapter = new SimpleChipAdapter(data);
+                adapter = new SimpleChipAdapter(Logic.symptomObjects);
                 cvTag.setAdapter(adapter);
                 cvTag.refreshDrawableState();
                 adapter.refresh();
@@ -88,31 +85,11 @@ public class elaag extends Fragment{
 
 
 
-        Button btn = tmp.findViewById(R.id.btnOk);
         Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "ara-hamah-homs.ttf");
-           btn.setTypeface(font);
-        data.add("First Item");
-        data.add("Second Item");
-        data.add("Third Item");
-        data.add("Fourth Item");
-        data.add("Fifth Item");
-        data.add("Sixth Item");
-        data.add("First Item");
-        data.add("Second Item");
-        data.add("Third Item");
-        data.add("Fourth Item");
-        data.add("Fifth Item");
-        data.add("Sixth Item");
-        data.add("Seventh Item");
-        data.add("First Item");
-        data.add("Second Item");
-        data.add("Third Item");
-        data.add("Fourth Item");
-        data.add("Fifth Item");
-        data.add("Sixth Item");
-        data.add("Seventh Item");
-        data.add("Seventh Item");
-        adapter = new SimpleChipAdapter(data);
+        enter.setTypeface(font);
+
+
+        adapter = new SimpleChipAdapter(Logic.symptomObjects);
         cvTag.setAdapter(adapter);
 
         add.setOnClickListener(new View.OnClickListener()
@@ -130,6 +107,63 @@ public class elaag extends Fragment{
                 fbDialogue.show();
             }
         });
+
+        next.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                if (!rdbFemale.isChecked() && !rdbMale.isChecked()){
+                    Toast.makeText(getActivity(), "يجب ان تحدد الجنس", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                int age;
+                try{
+                    age = Integer.parseInt(et.getText().toString());
+                    if (age <= 1 || age > 150){
+                        throw new Exception();
+                    }
+                }
+                catch(Exception ex){
+                    Toast.makeText(getActivity(), "برجاء ادخال عمر صحيح", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                boolean female = rdbFemale.isChecked();
+                HashMap<Object,Object> hm = new HashMap<>();
+                hm.put("sex", (female ? "fe" : "") + "male");
+                hm.put("age", age);
+                ArrayList<HashMap<String,String>> ev = new ArrayList<>();
+                for (int i = 0 ; i<adapter.getCount() ; ++i)
+                {
+                    if(adapter.isSelected(i))
+                    {
+                        HashMap<String,String> tmp = new HashMap<>();
+                        tmp.put("id","s_" + (Logic.symptomLinks.get(i)).getID());
+                        tmp.put("choice_id","present");
+                        ev.add(tmp);
+                    }
+                }
+                hm.put("evidence",ev.toArray());
+
+
+                //ALRIGHT TODO FOR BELAL
+                //'hm' is the hash map that we are interested in
+                //you just need to call Logic.contactServer with 'hm'
+                //and deal with the response
+                //HAVE FUN
+
+
+
+
+
+                //
+
+
+                //the following line is just a test feel free to remove it
+                System.out.println(new JSONObject(hm).toString());
+            }
+        });
+
         return view ;
     }
 

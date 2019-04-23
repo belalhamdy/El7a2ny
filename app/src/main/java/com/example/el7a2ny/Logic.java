@@ -20,15 +20,35 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Logic {
+
+    public static class Linker{
+        public Linker(String s, int i){
+            str = s;
+            id = i;
+        }
+        private String str;
+        private int id;
+        public String getStr(){
+            return str;
+        }
+        public int getID(){
+            return id;
+        }
+    }
 
     private static final String appID = "486a43c6";
     private static final String appKey = "bd2a557280bbec912007328ed4efe44e";
 
     private static final String translateURL = "https://script.google.com/macros/s/AKfycbxKR6VflxLD86oHRxfjyOlr8a2yfBHlBiivJLz00yuG-mHFLS3i/exec";
     private static final String infermedicaURL = "https://api.infermedica.com/v2/diagnosis";
+    public static String[] symptomNames;
+    public static String[] conditionNames;
+    public static ArrayList<Linker> symptomLinks = new ArrayList<>();
+    public static ArrayList<Object> symptomObjects = new ArrayList<>();
 
     public interface DoWithResult {
         void start(String param);

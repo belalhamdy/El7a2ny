@@ -4,6 +4,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
 import gr.net.maroulis.library.EasySplashScreen;
 
 public class splashScreen extends AppCompatActivity {
@@ -17,11 +21,30 @@ public class splashScreen extends AppCompatActivity {
         EasySplashScreen config = new EasySplashScreen(splashScreen.this)
                 .withFullScreen()
                 .withTargetActivity(MainActivity.class) // edit here the next activity
-                .withSplashTimeOut(500)
+                .withSplashTimeOut(1500)
                 .withBackgroundResource(R.color.colorPrimaryDark)
                 .withLogo(R.drawable.logo_100);
 
+        Logic.symptomNames = getResources().getStringArray(R.array.symptoms_array_ar);
+        Logic.conditionNames = getResources().getStringArray(R.array.conditions_array_ar);
+
+        for (int i = 0; i < Logic.symptomNames.length; ++i){
+            String v = Logic.symptomNames[i];
+            if (!v.isEmpty()) Logic.symptomLinks.add(new Logic.Linker(v,i));
+        }
+        Collections.sort(Logic.symptomLinks,new Comparator<Logic.Linker>() {
+            @Override
+            public int compare(Logic.Linker obj1, Logic.Linker obj2) {
+                return obj1.getStr().compareTo(obj2.getStr());
+            }
+        });
+
+        for (Logic.Linker x : Logic.symptomLinks){
+            Logic.symptomObjects.add(x.getStr());
+        }
+
         View easySplashScreenView = config.create();
         setContentView(easySplashScreenView);
+
     }
 }

@@ -16,121 +16,61 @@ public class MainActivity extends AppCompatActivity {
     Class fragmentClass;
     SNavigationDrawer sNavigationDrawer;
     public static Fragment fragment;
-    public static ArrayList<String> sympID = new ArrayList<>();
 
+
+    FragmentManager fragmentManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
 
-
-
-        //final TextView textView = getView().findViewById(R.id.txtMsg);
-
-        // copied code starts from here
+        fragmentManager = getSupportFragmentManager();
         sNavigationDrawer = findViewById(R.id.navigationDrawer);
 
-        //Creating a list of menu Items
-
         List<MenuItem> menuItems = new ArrayList<>();
-
-        //Use the MenuItem given by this library and not the default one.
-        //First parameter is the title of the menu item and then the second parameter is the image which will be the background of the menu item.
-
         menuItems.add(new MenuItem("العلاج",R.drawable.logo_300));
         menuItems.add(new MenuItem("الوقاية",R.drawable.logo_300));
         menuItems.add(new MenuItem("الإعدادات",R.drawable.logo_300));
         menuItems.add(new MenuItem("عن التطبيق",R.drawable.logo_300));
 
-        //then add them to navigation drawer
-
         sNavigationDrawer.setMenuItemList(menuItems);
-        fragmentClass =  wekaya.class; // here changes the starting frag
+
+        // here changes the starting frag
+        sNavigationDrawer.setAppbarTitleTV("العلاج");
+        fragmentClass =  elaag.class;
         try {
             fragment = (Fragment) fragmentClass.newInstance();
+            fragmentManager.beginTransaction().setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out).replace(R.id.frameLayout, fragment).commit();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (fragment != null) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out).replace(R.id.frameLayout, fragment).commit();
-        }
-
-
-
-        //Listener to handle the menu item click.
-        // It returns the position of the menu item clicked.
-        // Based on that you can switch between the fragments.
-
         sNavigationDrawer.setOnMenuItemClickListener(new SNavigationDrawer.OnMenuItemClickListener() {
             @Override
             public void onMenuItemClicked(int position) {
-                System.out.println("Position "+position);
 
                 switch (position){
-                    case 0:{
+                    case 0:
                        fragmentClass = elaag.class;
-                        break;
-                    }
-                    case 1:{
+                       break;
+                    case 1:
                         fragmentClass = wekaya.class;
                         break;
-                    }
-                    case 2:{
+                    case 2:
                         fragmentClass = settings.class;
                         break;
-                    }
-                    case 3:{
+                    case 3:
                         fragmentClass = about.class;
                         break;
-                    }
-
                 }
 
-                //Listener for drawer events such as opening and closing.
-                sNavigationDrawer.setDrawerListener(new SNavigationDrawer.DrawerListener() {
-
-                    @Override
-                    public void onDrawerOpened() {
-
-                    }
-
-                    @Override
-                    public void onDrawerOpening(){
-
-                    }
-
-                    @Override
-                    public void onDrawerClosing(){
-                        System.out.println("Drawer closed");
-
-                        try {
-                            fragment = (Fragment) fragmentClass.newInstance();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-
-                        if (fragment != null) {
-                            FragmentManager fragmentManager = getSupportFragmentManager();
-                            fragmentManager.beginTransaction().setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out).replace(R.id.frameLayout, fragment).commit();
-
-                        }
-                    }
-
-                    @Override
-                    public void onDrawerClosed() {
-
-                    }
-
-                    @Override
-                    public void onDrawerStateChanged(int newState) {
-                        System.out.println("State "+newState);
-                    }
-                });
+                try {
+                    fragment = (Fragment) fragmentClass.newInstance();
+                    fragmentManager.beginTransaction().setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out).replace(R.id.frameLayout, fragment).commit();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
-        //ends here
     }
 
 
