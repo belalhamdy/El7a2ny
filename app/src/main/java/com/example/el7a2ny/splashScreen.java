@@ -19,12 +19,13 @@ public class splashScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        int op = getSharedPreferences("userdetails", Context.MODE_PRIVATE).getInt("splash",1);
 
         setContentView(R.layout.activity_splash_screen);
         EasySplashScreen config = new EasySplashScreen(splashScreen.this)
                 .withFullScreen()
                 .withTargetActivity(MainActivity.class) // edit here the next activity
-                .withSplashTimeOut(1500)
+                .withSplashTimeOut(op * 1500)
                 .withBackgroundResource(R.color.colorPrimaryDark)
                 .withLogo(R.drawable.logo_100);
 
@@ -48,7 +49,6 @@ public class splashScreen extends AppCompatActivity {
 
         View easySplashScreenView = config.create();
 
-        int op = getSharedPreferences("userdetails", Context.MODE_PRIVATE).getInt("splash",1);
         if (op != 0)
             setContentView(easySplashScreenView);
         else{

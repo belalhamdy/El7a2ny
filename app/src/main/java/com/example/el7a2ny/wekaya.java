@@ -4,10 +4,14 @@ package com.example.el7a2ny;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 
 /**
@@ -29,6 +33,21 @@ public class wekaya extends Fragment {
         TextView tv = v.findViewById(R.id.txt);
         Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "ara-hamah-homs.ttf");
         tv.setTypeface(font);
+
+        try
+        {
+            InputStream inputStream = getResources().getAssets().open("wekaya.html");
+
+            String html = Logic.slurp(inputStream,1024*1024);
+
+            tv.setText(Html.fromHtml(html));
+        }
+        catch (IOException exception)
+        {
+            tv.setText("Failed loading html.");
+        }
+
+
         return v;
     }
 
