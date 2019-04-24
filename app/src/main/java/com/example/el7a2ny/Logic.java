@@ -74,7 +74,7 @@ public class Logic {
                 });
         queue.add(req);
     }
-    public static void contactServer(Context activ, HashMap<String, String> sym, final DoWithResult t) {
+    public static void contactServer(Context activ, HashMap<Object, Object> sym, final DoWithResult t) {
         // Instantiate the RequestQueue.
         /*String mytest = "{\n" +
                 "    \"sex\": \"male\",\n" +

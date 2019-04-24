@@ -32,4 +32,5 @@ dependencies {
     implementation 'com.github.shrikanth7698:Custom-Navigation-Drawer:v0.0.1'
     implementation 'com.github.jakebonk:ChipView:1.0.1'
     implementation 'me.omidh:liquidradiobutton:1.0.01'
+    implementation 'com.samigehi:loadingview:1.1'
 }

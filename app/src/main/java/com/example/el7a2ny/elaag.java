@@ -23,8 +23,11 @@ import android.widget.Toast;
 import com.allyants.chipview.ChipView;
 import com.allyants.chipview.SimpleChipAdapter;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -41,7 +44,15 @@ public class elaag extends Fragment{
     public elaag() {
         // Required empty public constructor
     }
-
+    private void doWithResponse(String response) throws JSONException {
+        JSONObject wholeResp = new JSONObject(response);
+        JSONArray Answer = wholeResp.getJSONArray("conditions");
+        JSONObject ret = Answer.getJSONObject(0);//returns the first answer only and this is the respnonse
+        String disease = ret.getString("name");
+        Log.d("resp" , "resp + " + response);
+        Log.d("resp" , "resp + " + disease);
+        Toast.makeText(getContext(), disease, Toast.LENGTH_SHORT).show();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -143,8 +154,18 @@ public class elaag extends Fragment{
                         ev.add(tmp);
                     }
                 }
-                hm.put("evidence",ev.toArray());
 
+                hm.put("evidence",ev.toArray());
+                Logic.contactServer(getContext(), hm, new Logic.DoWithResult() {
+                    @Override
+                    public void start(String param) {
+                        try {
+                            doWithResponse(param);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
 
                 //ALRIGHT TODO FOR BELAL
                 //'hm' is the hash map that we are interested in
@@ -160,7 +181,7 @@ public class elaag extends Fragment{
 
 
                 //the following line is just a test feel free to remove it
-                System.out.println(new JSONObject(hm).toString());
+                //System.out.println(new JSONObject(hm).toString());
             }
         });
 
