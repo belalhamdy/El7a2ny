@@ -5,7 +5,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".elaag">
-
+    <com.github.loadingview.LoadingView
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:id="@+id/loading"
+        android:layout_width="72sp"
+        android:layout_height="72sp"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="24dp"
+        app:lv_duration="30"
+        app:lv_end_color="@color/colorPrimaryDark"
+        app:lv_external_radius="24dp"
+        app:lv_internal_radius="4dp"
+        app:lv_start_color="@color/colorPrimary" />
     <RadioGroup
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -71,18 +86,19 @@
         app:layout_constraintRight_toLeftOf="@+id/ageTV"
         app:layout_constraintTop_toBottomOf="@id/ageTV"
         app:layout_constraintTop_toTopOf="@+id/ageTV" />
+
     <Button
-        android:background="@color/colorPrimaryDark"
-        android:textColor="@android:color/white"
         android:id="@+id/btnAdd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30sp"
-        app:layout_constraintTop_toBottomOf="@+id/ageTV"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
+        android:background="@color/colorPrimaryDark"
         android:text=" تعديل الأمراض "
-        android:textSize="30sp"/>
+        android:textColor="@android:color/white"
+        android:textSize="30sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ageTV" />
 
     <Button
         android:id="@+id/btnCancel"
@@ -107,4 +123,21 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_margin="50sp" />
+        <TextView
+            app:layout_constraintBottom_toTopOf="@+id/btnCancel"
+            app:layout_constraintTop_toBottomOf="@+id/btnAdd"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="20sp"
+            android:hint="المرض ..."
+            android:textSize="25sp"
+            android:gravity="center"
+            android:scrollbars="vertical"
+            android:layoutDirection="rtl"
+            android:id="@+id/disTV"
+            android:textColor="@color/colorPrimary"
+            />
+
 </android.support.constraint.ConstraintLayout>

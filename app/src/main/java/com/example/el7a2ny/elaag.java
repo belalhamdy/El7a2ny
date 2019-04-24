@@ -1,12 +1,14 @@
 package com.example.el7a2ny;
 
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -22,12 +25,14 @@ import android.widget.Toast;
 
 import com.allyants.chipview.ChipView;
 import com.allyants.chipview.SimpleChipAdapter;
+import com.github.loadingview.LoadingView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -44,14 +49,32 @@ public class elaag extends Fragment{
     public elaag() {
         // Required empty public constructor
     }
+    private void updateTextView(String newtxt)
+    {
+        TextView tv = getView().findViewById(R.id.disTV);
+        Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "ara-hamah-homs.ttf");
+        tv.setTypeface(font);
+        tv.setText(newtxt);
+        LoadingView prog = getView().findViewById(R.id.loading);
+        prog.stop();
+    }
     private void doWithResponse(String response) throws JSONException {
         JSONObject wholeResp = new JSONObject(response);
         JSONArray Answer = wholeResp.getJSONArray("conditions");
         JSONObject ret = Answer.getJSONObject(0);//returns the first answer only and this is the respnonse
         String disease = ret.getString("name");
-        Log.d("resp" , "resp + " + response);
-        Log.d("resp" , "resp + " + disease);
-        Toast.makeText(getContext(), disease, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getContext(), disease, Toast.LENGTH_SHORT).show();
+
+        try {
+            Logic.translate(getContext(), disease, "en", "ar", new Logic.DoWithResult() {
+                @Override
+                public void start(String param) {
+                    updateTextView(param);
+                }
+            });
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -63,17 +86,17 @@ public class elaag extends Fragment{
         final View tmp = LayoutInflater.from(getContext()).inflate(R.layout.choose, null);
         final ChipView cvTag = tmp.findViewById(R.id.cvTag);
         final Button enter = tmp.findViewById(R.id.btnOk);
-
         final View view = inflater.inflate(R.layout.fragment_elaag, container, false);
         final Button cancel = view.findViewById(R.id.btnCancel);
         final RadioGroup rg = view.findViewById(R.id.RG);
         final EditText et = view.findViewById(R.id.ageET);
         final Button add = view.findViewById(R.id.btnAdd);
         final Button next = view.findViewById(R.id.btnNext);
-
+        final TextView disTv = view.findViewById(R.id.disTV);
         final RadioButton rdbMale = view.findViewById(R.id.rbm);
         final RadioButton rdbFemale = view.findViewById(R.id.rbf);
-
+        final LoadingView prog = view.findViewById(R.id.loading);
+        prog.stop();
         enter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,15 +110,14 @@ public class elaag extends Fragment{
             {
                 rg.clearCheck();
                 et.setText("");
+                disTv.setText("");
                 adapter = new SimpleChipAdapter(Logic.symptomObjects);
                 cvTag.setAdapter(adapter);
                 cvTag.refreshDrawableState();
                 adapter.refresh();
+                prog.stop();
             }
         });
-
-
-
         Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "ara-hamah-homs.ttf");
         enter.setTypeface(font);
 
@@ -138,7 +160,7 @@ public class elaag extends Fragment{
                     Toast.makeText(getActivity(), "برجاء ادخال عمر صحيح", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
+                prog.start();
                 boolean female = rdbFemale.isChecked();
                 HashMap<Object,Object> hm = new HashMap<>();
                 hm.put("sex", (female ? "fe" : "") + "male");
@@ -167,21 +189,6 @@ public class elaag extends Fragment{
                     }
                 });
 
-                //ALRIGHT TODO FOR BELAL
-                //'hm' is the hash map that we are interested in
-                //you just need to call Logic.contactServer with 'hm'
-                //and deal with the response
-                //HAVE FUN
-
-
-
-
-
-                //
-
-
-                //the following line is just a test feel free to remove it
-                //System.out.println(new JSONObject(hm).toString());
             }
         });
 
@@ -197,7 +204,7 @@ public class elaag extends Fragment{
         Button add = view.findViewById(R.id.btnAdd);
         Button cancel = view.findViewById(R.id.btnCancel);
         Button next = view.findViewById(R.id.btnNext);
-
+        TextView disTv = view.findViewById(R.id.disTV);
         Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "ara-hamah-homs.ttf");
             rbm.setTypeface(font);
             rbf.setTypeface(font);
@@ -206,9 +213,8 @@ public class elaag extends Fragment{
             add.setTypeface(font);
             cancel.setTypeface(font);
             next.setTypeface(font);
-
+            disTv.setTypeface(font);
         }
-
 
     }
 
