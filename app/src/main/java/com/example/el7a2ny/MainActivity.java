@@ -28,10 +28,10 @@ public class MainActivity extends AppCompatActivity {
         sNavigationDrawer = findViewById(R.id.navigationDrawer);
 
         List<MenuItem> menuItems = new ArrayList<>();
-        menuItems.add(new MenuItem("العلاج",R.drawable.logo_300));
-        menuItems.add(new MenuItem("الوقاية",R.drawable.logo_300));
-        menuItems.add(new MenuItem("الإعدادات",R.drawable.logo_300));
-        menuItems.add(new MenuItem("عن التطبيق",R.drawable.logo_300));
+        menuItems.add(new MenuItem("العلاج",R.drawable.elag));
+        menuItems.add(new MenuItem("الوقاية",R.drawable.wekaya));
+        menuItems.add(new MenuItem("الإعدادات",R.drawable.settings));
+        menuItems.add(new MenuItem("عن التطبيق",R.drawable.about));
 
         sNavigationDrawer.setMenuItemList(menuItems);
 

@@ -3,6 +3,7 @@ package com.example.el7a2ny;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -36,7 +37,10 @@ public class settings extends Fragment {
         LiquidRadioButton rdb0 = v.findViewById(R.id.rdb0);
         LiquidRadioButton rdb1 = v.findViewById(R.id.rdb1);
         LiquidRadioButton rdb2 = v.findViewById(R.id.rdb2);
-
+        Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "ara-hamah-homs.ttf");
+        rdb0.setTypeface(font);
+        rdb1.setTypeface(font);
+        rdb2.setTypeface(font);
         t = getContext().getSharedPreferences("userdetails", Context.MODE_PRIVATE);
 
         rdb0.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

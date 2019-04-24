@@ -3,13 +3,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".about">
+    tools:context=".wekaya">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/txtMsg"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="about fragment" />
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/abouttxt"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10sp"
+            android:layout_marginRight="10sp"
+            android:layout_marginTop="10sp"
+            android:layout_marginBottom="10sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:text="put xml text here" />
+    </ScrollView>
+
 
 </FrameLayout>

@@ -1,6 +1,7 @@
 package com.example.el7a2ny;
 
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -30,23 +31,12 @@ public class about extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_about, container, false);
+        View v = inflater.inflate(R.layout.fragment_wekaya, container, false);
+        TextView tv = v.findViewById(R.id.abouttxt);
+        Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "ara-hamah-homs.ttf");
+        tv.setTypeface(font);
+        return v;
     }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        final TextView t = view.findViewById(R.id.txtMsg);
-        try {
-            Logic.translate(getActivity(), "hello, my name is belal, and this is my friend ahmed.", "en", "ar", new Logic.DoWithResult() {
-                @Override
-                public void start(String param) {
-                    t.setText(param);
-                }
-            });
-            //} catch (JSONException e) {
-            //    Log.d("drdr","drdr : " + e.getMessage());
-        }catch(UnsupportedEncodingException e){
-            Log.d("drdr","drdr : " + e.getMessage());
-        }
-    }
+
 }
